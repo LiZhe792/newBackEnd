@@ -6,7 +6,6 @@ import cn.edu.sdu.java.server.payload.response.MyTreeNode;
 import cn.edu.sdu.java.server.payload.response.OptionItemList;
 import cn.edu.sdu.java.server.services.BaseService;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -14,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 
+import javax.validation.Valid;
 import java.util.*;
 
 /**
@@ -31,13 +31,22 @@ public class BaseController {
         this.baseService = baseService;
     }
 
+    /**
+     *  获取menu表的新的Id StringBoot 对SqLite 主键自增支持不好  插入记录是需要设置主键ID，编写方法获取新的menu_id
+     * @return
+     */
+    /**
+     * 获取dictionary表的新的Id StringBoot 对SqLite 主键自增支持不好  插入记录是需要设置主键ID，编写方法获取新的id
+     *
+     * @return
+     */
 
     /**
      * 获取菜单列表
      * 前台请求参数 userTypeId 用户类型主键ＩＤ，如果为空或缺的当前登录用户的类型的ID
      * 返回前端存储菜单数据的 MapList
      *
-     *
+     * @return
      */
 
     @PostMapping("/getMenuList")
@@ -50,7 +59,7 @@ public class BaseController {
      * 前台请求参数 无
      * 返回前端存储角色信息的OptionItem的List
      *
-     *
+     * @return
      */
 
     @PostMapping("/getRoleOptionItemList")
@@ -64,7 +73,7 @@ public class BaseController {
      * 前台请求参数 无
      * 返回前端某个用户类型 userTypeId 菜单树对象MyTreeNode（这个是一个递归的树节点对象）
      *
-     *
+     * @return
      */
 
     @PostMapping("/getMenuTreeNodeList")
@@ -80,7 +89,7 @@ public class BaseController {
      * 前台请求参数 id 要删除的菜单的主键 menu_id
      * 返回前端 操作正常
      *
-     *
+     * @return
      */
     @PostMapping("/menuDelete")
     @PreAuthorize("hasRole('ADMIN')")
@@ -94,7 +103,7 @@ public class BaseController {
      * 前台请求参数 id 要修改菜单的主键 menu_id  name 菜单名字  title 菜单标题
      * 返回前端 操作正常
      *
-     *
+     * @return
      */
 
     @PostMapping("/menuSave")
@@ -108,20 +117,28 @@ public class BaseController {
      * 前台请求参数 无
      * 返回前端 数据字典数节点对象 MyTreeNode（这个是一个递归的树节点对象）
      *
-     *
+     * @return
      */
     @PostMapping("/getDictionaryTreeNodeList")
     @PreAuthorize("hasRole('ADMIN')")
     public List<MyTreeNode> getDictionaryTreeNodeList(@Valid @RequestBody DataRequest dataRequest) {
         return baseService.getDictionaryTreeNodeList();
     }
+    /**
+     * 添加新一个地点
+     * 前台请求参数   pid 字典所属的父字典的pid  label 菜单的标题
+     * 返回前端先创建字典的对象 MyTreeNode
+     *
+     * @return
+     */
+
 
     /**
      * 删除字典
      * 前台请求参数 id 要删除的字典的主键 id
      * 返回前端 操作正常
      *
-     *
+     * @return
      */
     @PostMapping("/dictionaryDelete")
     @PreAuthorize("hasRole('ADMIN')")
@@ -134,7 +151,7 @@ public class BaseController {
      * 前台请求参数 id 要修改菜单的主键 id  value 地点值  label 字典名
      * 返回前端 操作正常
      *
-     *
+     * @return
      */
 
     @PostMapping("/dictionarySave")
@@ -148,7 +165,7 @@ public class BaseController {
      * 前台请求参数  code 数据类型的值
      * 返回前端存储数据字典信息的OptionItem的List
      *
-     *
+     * @return
      */
 
     @PostMapping("/getDictionaryOptionItemList")
@@ -161,7 +178,7 @@ public class BaseController {
      * 前台请求参数  文件路径
      * 返回前端图片数据的二进制数据留
      *
-     *
+     * @return
      */
     @PostMapping("/getFileByteData")
     public ResponseEntity<StreamingResponseBody> getFileByteData(@Valid @RequestBody DataRequest dataRequest) {
@@ -174,7 +191,7 @@ public class BaseController {
      * 前台请求参数  uploader 信息  remoteFile 服务器文件路径  fileName 前端上传的文件名
      * 返回前端 正常操作信心和异常操作信息
      *
-     *
+     * @return
      */
     @PostMapping(path = "/uploadPhoto")
     public DataResponse uploadPhoto(@RequestBody byte[] barr,
@@ -189,7 +206,7 @@ public class BaseController {
      * 前台请求参数  oldPassword 用户的旧密码  newPassword 用户的新密码
      * 返回前端 正常操作
      *
-     *
+     * @return
      */
     //  修改密码
     //Student页面的列表里点击删除按钮则可以删除已经存在的学生信息， 前端会将该记录的id 回传到后端，方法从参数获取id，查出相关记录，调用delete方法删除
@@ -204,7 +221,7 @@ public class BaseController {
      * 前台请求参数  html 前端传过来的 html字符串
      * 返回前端 字符串保存的MAP的key,用于下载html，PDF的主键
      *
-     *
+     * @return
      */
 
     @PostMapping("/uploadHtmlString")
@@ -217,7 +234,7 @@ public class BaseController {
      * 前台请求参数  htmlCount 获取原始的前端传送后端保存的Html的主键
      * 返回前端 html页面， 前端WebPage可以直接访问的页面
      *
-     *
+     * @return
      */
 
     @GetMapping("/getHtmlPage")
@@ -225,6 +242,18 @@ public class BaseController {
        return baseService.htmlGetBaseHtmlPage(request);
     }
 
+    /**
+     * 获取PDF 数据，用于前端PDFView显示，
+     * 前台请求参数  htmlCount 获取原始的前端传送后端保存的Html的主键
+     * 返回前端 PDF数据的二进制数据流， 系统将html转换为PDF格式数据
+     *
+     * @return
+     */
+
+    @PostMapping("/getPdfData")
+    public ResponseEntity<StreamingResponseBody> getPdfData(@Valid @RequestBody DataRequest dataRequest) {
+        return baseService.getPdfData(dataRequest);
+    }
 
 
     //  Web 请求
@@ -235,7 +264,7 @@ public class BaseController {
 
     @PostMapping(value = "/uploadPhotoWeb", consumes = {"multipart/form-data"})
     @PreAuthorize("hasRole('STUDENT') or hasRole('ADMIN')")
-    public DataResponse uploadPhotoWeb(@RequestParam Map<String,Object> pars, @RequestParam("file") MultipartFile file) {
+    public DataResponse uploadPhotoWeb(@RequestParam Map pars, @RequestParam("file") MultipartFile file) {
         return baseService.uploadPhotoWeb(pars, file);
     }
 }

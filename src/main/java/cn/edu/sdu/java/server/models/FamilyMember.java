@@ -1,11 +1,8 @@
 package cn.edu.sdu.java.server.models;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Size;
-import lombok.Getter;
-import lombok.Setter;
-@Getter
-@Setter
+import javax.validation.constraints.Size;
+
 @Entity
 @Table(	name = "family_member",
         uniqueConstraints = {
@@ -16,7 +13,7 @@ public class FamilyMember {
     private Integer memberId;
 
     @ManyToOne
-    @JoinColumn(name="personId")
+    @JoinColumn(name="student_id")
     private Student student;
     @Size(max=10)
     private String relation;
@@ -28,4 +25,59 @@ public class FamilyMember {
     @Size(max=50)
     private String unit;
 
+    public Integer getMemberId() {
+        return memberId;
+    }
+
+    public void setMemberId(Integer memberId) {
+        this.memberId = memberId;
+    }
+
+    public Student getStudent() {
+        return student;
+    }
+
+    public void setStudent(Student student) {
+        this.student = student;
+    }
+
+    public String getRelation() {
+        return relation;
+    }
+
+    public void setRelation(String relation) {
+        this.relation = relation;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public Integer getAge() {
+        return age;
+    }
+
+    public void setAge(Integer age) {
+        this.age = age;
+    }
+
+    public String getUnit() {
+        return unit;
+    }
+
+    public void setUnit(String unit) {
+        this.unit = unit;
+    }
 }

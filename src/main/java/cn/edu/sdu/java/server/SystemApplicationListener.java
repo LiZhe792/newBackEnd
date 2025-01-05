@@ -1,8 +1,9 @@
 package cn.edu.sdu.java.server;
 
 import cn.edu.sdu.java.server.services.SystemService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import cn.edu.sdu.java.server.services.TestService;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.core.annotation.Order;
@@ -13,17 +14,21 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @Order(0)
+@Slf4j
 public class SystemApplicationListener implements ApplicationListener<ApplicationReadyEvent> {
-    private static final Logger log = LoggerFactory.getLogger(SystemApplicationListener.class);
     private final SystemService systemService;  //系统服务对象自动注入
-    public SystemApplicationListener(SystemService systemService) {
+    private final TestService testService;
+    public SystemApplicationListener(SystemService systemService, TestService testService) {
         this.systemService = systemService;
+        this.testService = testService;
     }
 
-
+    /**
+     * 系统实践处理方法 系统启动后自动加载数据字典
+     * @param event
+     */
     @Override
     public void onApplicationEvent(ApplicationReadyEvent event) {
-        log.info(event.toString());
         log.info("SystemInitStart");
         systemService.initDictionary();
         systemService.initSystem();

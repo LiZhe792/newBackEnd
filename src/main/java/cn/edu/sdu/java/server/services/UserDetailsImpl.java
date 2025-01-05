@@ -2,8 +2,6 @@ package cn.edu.sdu.java.server.services;
 
 import cn.edu.sdu.java.server.models.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.Getter;
-import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -12,8 +10,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
-@Getter
-@Setter
+
 public class UserDetailsImpl implements UserDetails {
     private static final long serialVersionUID = 1L;
 
@@ -41,7 +38,7 @@ public class UserDetailsImpl implements UserDetails {
         authorities.add(new SimpleGrantedAuthority(user.getUserType().getName().name()));
 
         return new UserDetailsImpl(
-                user.getPersonId(),
+                user.getUserId(),
                 user.getUserName(),
                 user.getPassword(),
                 user.getPerson().getName(),
@@ -53,6 +50,12 @@ public class UserDetailsImpl implements UserDetails {
         return authorities;
     }
 
+    public Integer getId() {
+        return id;
+    }
+    public String getPerName(){
+        return perName;
+    }
     @Override
     public String getPassword() {
         return password;

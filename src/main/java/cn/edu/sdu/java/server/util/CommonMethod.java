@@ -21,7 +21,7 @@ import java.util.*;
  * CommonMethod 公共处理方法实例类
  */
 public class CommonMethod {
-    private static final ObjectMapper mapper = new ObjectMapper();
+    private static ObjectMapper mapper = new ObjectMapper();
     public static final MediaType exelType = new MediaType("application", "vnd.openxmlformats-officedocument.spreadsheetml.sheet");
     public static DataResponse getReturnData(Object obj, String msg){
         return new   DataResponse(0,obj,msg);
@@ -46,17 +46,27 @@ public class CommonMethod {
      * Integer getUserId() 获得用户的userId 该static 方法可以在任何的Controller和Service中使用，可以获得当前登录用户的用户ID，可以通过在Web请求服务中使用该方法获取当前请求客户的信息
      * @return
      */
-    public static Integer getPersonId(){
+    public static Integer getUserId(){
         Object obj = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if(!(obj instanceof UserDetailsImpl userDetails))
+        if(!(obj instanceof UserDetailsImpl))
             return null;
-        return userDetails.getId();
+        UserDetailsImpl userDetails =
+                (UserDetailsImpl) obj;
+        if(userDetails != null)
+            return userDetails.getId();
+        else
+            return null;
     }
     public static String getUsername(){
         Object obj = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if(!(obj instanceof UserDetailsImpl userDetails))
+        if(!(obj instanceof UserDetailsImpl))
             return null;
-        return userDetails.getUsername();
+        UserDetailsImpl userDetails =
+                (UserDetailsImpl) obj;
+        if(userDetails != null)
+            return userDetails.getUsername();
+        else
+            return null;
     }
 
     public static String getNextNum2(String num) {
@@ -67,7 +77,7 @@ public class CommonMethod {
             prefix= "";
         }
         else {
-            str = num.substring(num.length() - 2);
+            str = num.substring(num.length() - 2, num.length());
             prefix = num.substring(0,num.length() - 2);
         }
         int c;
@@ -91,7 +101,7 @@ public class CommonMethod {
             prefix= "";
         }
         else {
-            str = num.substring(num.length() - 3);
+            str = num.substring(num.length() - 3, num.length());
             prefix = num.substring(0,num.length() - 3);
         }
         int c;
@@ -121,7 +131,7 @@ public class CommonMethod {
             prefix= "";
         }
         else {
-            str = num.substring(num.length() - 4);
+            str = num.substring(num.length() - 4, num.length());
             prefix = num.substring(0,num.length() - 4);
         }
         int c;
@@ -149,7 +159,7 @@ public class CommonMethod {
             return prefix+ c;
         }
     }
-    public static String[] getStrings(Map<String,Object> data,String key){
+    public static String[] getStrings(Map data,String key){
         Object obj = data.get(key);
         if(obj == null)
             return new String[]{};
@@ -158,7 +168,7 @@ public class CommonMethod {
         return new String[]{};
     }
 
-    public static String getString(Map<String,Object> data,String key){
+    public static String getString(Map data,String key){
         Object obj = data.get(key);
         if(obj == null)
             return "";
@@ -166,34 +176,37 @@ public class CommonMethod {
             return (String)obj;
         return obj.toString();
     }
-    public static Boolean getBoolean(Map<String,Object> data,String key){
+    public static Boolean getBoolean(Map data,String key){
         Object obj = data.get(key);
         if(obj == null)
             return false;
         if(obj instanceof Boolean)
             return (Boolean)obj;
-        return "true".equals(obj.toString());
+        if("true".equals(obj.toString()))
+            return true;
+        else
+            return false;
     }
-    public static List<?> getList(Map<String,Object> data, String key){
+    public static List getList(Map data, String key){
         Object obj = data.get(key);
         if(obj == null)
-            return new ArrayList<>();
+            return new ArrayList();
         if(obj instanceof List)
-            return (List<?>)obj;
+            return (List)obj;
         else
-            return new ArrayList<>();
+            return new ArrayList();
     }
-    public static Map<String,Object> getMap(Map<String,Object> data,String key){
+    public static Map getMap(Map data,String key){
         Object obj = data.get(key);
         if(obj == null)
-            return new HashMap<>();
+            return new HashMap();
         if(obj instanceof Map)
-            return (Map<String, Object>) obj;
+            return (Map)obj;
         else
-            return new HashMap<>();
+            return new HashMap();
     }
 
-    public static Integer getInteger(Map<String,Object> data,String key) {
+    public static Integer getInteger(Map data,String key) {
         Object obj = data.get(key);
         if(obj == null)
             return null;
@@ -206,7 +219,7 @@ public class CommonMethod {
             return null;
         }
     }
-    public static Integer getInteger0(Map<String,Object> data,String key) {
+    public static Integer getInteger0(Map data,String key) {
         Object obj = data.get(key);
         if(obj == null)
             return 0;
@@ -219,7 +232,7 @@ public class CommonMethod {
             return 0;
         }
     }
-    public static Long getLong(Map<String,Object> data,String key) {
+    public static Long getLong(Map data,String key) {
         Object obj = data.get(key);
         if(obj == null)
             return null;
@@ -233,7 +246,7 @@ public class CommonMethod {
         }
     }
 
-    public static Double getDouble(Map<String,Object> data,String key) {
+    public static Double getDouble(Map data,String key) {
         Object obj = data.get(key);
         if(obj == null)
             return null;
@@ -246,7 +259,7 @@ public class CommonMethod {
             return null;
         }
     }
-    public static Double getDouble0(Map<String,Object> data,String key) {
+    public static Double getDouble0(Map data,String key) {
         Double d0 = 0d;
         Object obj = data.get(key);
         if(obj == null)
@@ -260,7 +273,7 @@ public class CommonMethod {
             return d0;
         }
     }
-    public static Date getDate(Map<String,Object> data, String key) {
+    public static Date getDate(Map data, String key) {
         Object obj = data.get(key);
         if(obj == null)
             return null;
@@ -269,7 +282,7 @@ public class CommonMethod {
         String str = obj.toString();
         return DateTimeTool.formatDateTime(str,"yyyy-MM-dd");
     }
-    public static Date getTime(Map<String,Object> data,String key) {
+    public static Date getTime(Map data,String key) {
         Object obj = data.get(key);
         if(obj == null)
             return null;
@@ -279,15 +292,22 @@ public class CommonMethod {
         return DateTimeTool.formatDateTime(str,"yyyy-MM-dd HH:mm:ss");
     }
 
+
+    /**
+     * String replaceNameValue(String html, Map<String,String>m) 将用户HTML模板中参数替换为Map里面的值，参数名对应Map中的Key
+     * @param html
+     * @param m
+     * @return
+     */
     public static String replaceNameValue(String html, Map<String,String>m) {
-        if(html== null || html.isEmpty())
+        if(html== null || html.length() == 0)
             return html;
-        StringBuilder buf = new StringBuilder();
+        StringBuffer buf = new StringBuffer();
         StringTokenizer sz = new StringTokenizer(html,"$");
         if(sz.countTokens()<=1)
             return html;
         String str,key,value;
-        int index;
+        Integer index;
         while(sz.hasMoreTokens()) {
             str = sz.nextToken();
             if(str.charAt(0)== '{') {
@@ -297,7 +317,7 @@ public class CommonMethod {
                 if(value== null){
                     value = "";
                 }
-                buf.append(value).append(str, index + 1, str.length());
+                buf.append(value+str.substring(index+1,str.length()));
             }else {
                 buf.append(str);
             }
@@ -305,32 +325,44 @@ public class CommonMethod {
         return buf.toString();
     }
 
+    /**
+     * String addHeadInfo(String html,String head) 增加HTML中的Head信息 可以修改扩展
+     * @param html
+     * @param head
+     * @return
+     */
     public static String addHeadInfo(String html,String head) {
         int index0 = html.indexOf("<head>");
         int index1 = html.indexOf("</head>");
-        return html.substring(0,index0+6)+head + html.substring(index1);
+        return html.substring(0,index0+6)+head + html.substring(index1,html.length());
     }
 
+    /**
+     * String removeErrorString(String html,String ... subs)  移除 html中 PDF转换无法识别的信息 可以修改扩展
+      * @param html
+     * @param subs
+     * @return
+     */
     public static String removeErrorString(String html,String ... subs) {
-        if(html== null || html.isEmpty())
+        if(html== null || html.length() == 0)
             return html;
-        StringBuilder buf;
+        StringBuffer buf;
         int index;
         int oldIndex;
         int slen;
         String content = html;
         for(String sub : subs) {
             slen = sub.length();
-            buf = new StringBuilder();
+            buf = new StringBuffer();
             index = 0;
             oldIndex = 0;
             while(index >= 0) {
                 index = content.indexOf(sub,oldIndex);
                 if(index > 0) {
-                    buf.append(content, oldIndex, index);
+                    buf.append(content.substring(oldIndex,index));
                     oldIndex = index+slen;
                 }else {
-                    buf.append(content, oldIndex, content.length());
+                    buf.append(content.substring(oldIndex,content.length()));
                 }
             }
             content = buf.toString();
@@ -380,6 +412,12 @@ public class CommonMethod {
             return "";
         }
     }
+    /**
+     * XSSFCellStyle createCellStyle(XSSFWorkbook workbook, int fontSize) Excl 导出 Cell 属性初始方法
+     * @param workbook
+     * @param fontSize
+     * @return
+     */
     public static XSSFCellStyle createCellStyle(XSSFWorkbook workbook, int fontSize) {
         XSSFFont font = workbook.createFont();
         //在对应的workbook中新建字体

@@ -26,6 +26,7 @@ public class DateTimeTool {
             return tmpDate;
         } catch (ParseException e) {
             // TODO Auto-generated catch block
+//			e.printStackTrace();
             return null;
         }
     }

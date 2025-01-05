@@ -14,14 +14,17 @@ import java.util.List;
 @Service
 public class AuthenticationService {
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
 
     public AuthenticationService(
         UserRepository userRepository,
-        AuthenticationManager authenticationManager
+        AuthenticationManager authenticationManager,
+        PasswordEncoder passwordEncoder
     ) {
         this.authenticationManager = authenticationManager;
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
 
@@ -36,4 +39,11 @@ public class AuthenticationService {
         return userRepository.findByUserName(input.getUsername()).orElseThrow();
     }
 
+    public List<User> allUsers() {
+        List<User> users = new ArrayList<>();
+
+        userRepository.findAll().forEach(users::add);
+
+        return users;
+    }
 }

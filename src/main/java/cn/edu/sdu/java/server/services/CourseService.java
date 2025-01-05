@@ -4,6 +4,7 @@ import cn.edu.sdu.java.server.models.Course;
 import cn.edu.sdu.java.server.payload.request.DataRequest;
 import cn.edu.sdu.java.server.payload.response.DataResponse;
 import cn.edu.sdu.java.server.repositorys.CourseRepository;
+import cn.edu.sdu.java.server.repositorys.PersonRepository;
 import cn.edu.sdu.java.server.util.CommonMethod;
 import org.springframework.stereotype.Service;
 import java.util.*;
@@ -11,8 +12,10 @@ import java.util.*;
 @Service
 public class CourseService {
     private final CourseRepository courseRepository;
-    public CourseService(CourseRepository courseRepository) {
+    private final PersonRepository personRepository;
+    public CourseService(CourseRepository courseRepository, PersonRepository personRepository) {
         this.courseRepository = courseRepository;
+        this.personRepository = personRepository;
     }
 
     public DataResponse getCourseList(DataRequest dataRequest) {
@@ -20,11 +23,11 @@ public class CourseService {
         if(numName == null)
             numName = "";
         List<Course> cList = courseRepository.findCourseListByNumName(numName);  //数据库查询操作
-        List<Map<String,Object>> dataList = new ArrayList<>();
-        Map<String,Object> m;
+        List dataList = new ArrayList();
+        Map m;
         Course pc;
         for (Course c : cList) {
-            m = new HashMap<>();
+            m = new HashMap();
             m.put("courseId", c.getCourseId()+"");
             m.put("num",c.getNum());
             m.put("name",c.getName());

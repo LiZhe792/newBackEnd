@@ -1,11 +1,8 @@
 package cn.edu.sdu.java.server.models;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Size;
-import lombok.Getter;
-import lombok.Setter;
-@Getter
-@Setter
+import javax.validation.constraints.Size;
+
 @Entity
 @Table(	name = "system_info",
         uniqueConstraints = {
@@ -21,4 +18,35 @@ import lombok.Setter;
     @Size(max = 100)
     String des;
 
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getValue() {
+        return value;
+    }
+
+    public void setValue(String value) {
+        this.value = value;
+    }
+
+    public String getDes() {
+        return des;
+    }
+
+    public void setDes(String des) {
+        this.des = des;
+    }
 }

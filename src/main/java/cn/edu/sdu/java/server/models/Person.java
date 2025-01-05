@@ -3,12 +3,12 @@ package cn.edu.sdu.java.server.models;
 
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
-/*
+/**
  * Person人员表实体类 保存人员的基本信息信息， 账户、学生和教师都关联人员，
  * Integer personId 人员表 person 主键 person_id
  * String num 人员编号
@@ -23,10 +23,6 @@ import jakarta.validation.constraints.Size;
  * String address 地址
  * String introduce 个人简介
  */
-import lombok.Getter;
-import lombok.Setter;
-@Getter
-@Setter
 @Entity
 @Table(	name = "person",
         uniqueConstraints = {
@@ -55,7 +51,6 @@ public class Person {
     @Size(max = 2)
     private String gender;
 
-    @Size(max = 10)
     private String birthday;
 
     @Size(max = 60)
@@ -72,4 +67,102 @@ public class Person {
     private String introduce;
 
 
+    public Person() {
+    }
+
+    public Integer getPersonId() {
+        return personId;
+    }
+
+    public void setPersonId(Integer personId) {
+        this.personId = personId;
+    }
+
+    public String getNum() {
+        return num;
+    }
+
+    public void setNum(String num) {
+        this.num = num;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getDept() {
+        return dept;
+    }
+
+    public void setDept(String dept) {
+        this.dept = dept;
+    }
+
+    public String getCard() {
+        return card;
+    }
+
+    public void setCard(String card) {
+        this.card = card;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public String getBirthday() {
+        return birthday;
+    }
+
+    public void setBirthday(String birthday) {
+        this.birthday = birthday;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getIntroduce() {
+        return introduce;
+    }
+
+    public void setIntroduce(String introduce) {
+        this.introduce = introduce;
+    }
 }

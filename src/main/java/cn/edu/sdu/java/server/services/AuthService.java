@@ -9,7 +9,6 @@ import cn.edu.sdu.java.server.repositorys.*;
 import cn.edu.sdu.java.server.util.CommonMethod;
 import cn.edu.sdu.java.server.util.DateTimeTool;
 import cn.edu.sdu.java.server.util.LoginControlUtil;
-import jakarta.validation.Valid;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -22,9 +21,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import javax.validation.Valid;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class AuthService {
@@ -32,18 +33,22 @@ public class AuthService {
     private final UserRepository userRepository;
     private final UserTypeRepository userTypeRepository;
     private final StudentRepository studentRepository;
+    private final TeacherRepository teacherRepository;
     private final AuthenticationManager authenticationManager;
     private final JwtService jwtService;
     private final PasswordEncoder encoder;
+    private final ResourceLoader resourceLoader;
 
-    public AuthService(PersonRepository personRepository, UserRepository userRepository, UserTypeRepository userTypeRepository, StudentRepository studentRepository,AuthenticationManager authenticationManager, JwtService jwtService, PasswordEncoder encoder, ResourceLoader resourceLoader) {
+    public AuthService(PersonRepository personRepository, UserRepository userRepository, UserTypeRepository userTypeRepository, StudentRepository studentRepository, TeacherRepository teacherRepository, AuthenticationManager authenticationManager, JwtService jwtService, PasswordEncoder encoder, ResourceLoader resourceLoader) {
         this.personRepository = personRepository;
         this.userRepository = userRepository;
         this.userTypeRepository = userTypeRepository;
         this.studentRepository = studentRepository;
+        this.teacherRepository = teacherRepository;
         this.authenticationManager = authenticationManager;
         this.jwtService = jwtService;
         this.encoder = encoder;
+        this.resourceLoader = resourceLoader;
     }
     public ResponseEntity<?> authenticateUser(LoginRequest loginRequest) {
 
@@ -55,7 +60,7 @@ public class AuthService {
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
         List<String> roles = userDetails.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
-                .toList();
+                .collect(Collectors.toList());
         Optional<User> op= userRepository.findByUserName(loginRequest.getUsername());
         if(op.isPresent()) {
             User user= op.get();
@@ -72,7 +77,7 @@ public class AuthService {
                 userDetails.getId(),
                 userDetails.getUsername(),
                 userDetails.getPerName(),
-                roles.getFirst()));
+                roles.get(0)));
     }
     public DataResponse getValidateCode(DataRequest dataRequest) {
         return CommonMethod.getReturnData(LoginControlUtil.getInstance().getValidateCodeDataMap());
@@ -82,7 +87,7 @@ public class AuthService {
         Integer validateCodeId = dataRequest.getInteger("validateCodeId");
         String validateCode = dataRequest.getString("validateCode");
         LoginControlUtil li =  LoginControlUtil.getInstance();
-        if(validateCodeId == null || validateCode== null || validateCode.isEmpty()) {
+        if(validateCodeId == null || validateCode== null || validateCode.length() == 0) {
             return CommonMethod.getReturnMessageError("验证码为空！");
         }
         String value = li.getValidateCode(validateCodeId);
@@ -90,8 +95,10 @@ public class AuthService {
             return CommonMethod.getReturnMessageError("验证码错位！");
         return CommonMethod.getReturnMessageOK();
     }
-    /*
+    /**
      *  注册用户示例，我们项目暂时不用， 所有用户通过管理员添加，这里注册，没有考虑关联人员信息的创建，使用时参加学生添加功能的实现
+     * @param registerUser
+     * @return
      */
     @PostMapping("/registerUser")
     public DataResponse registerUser(@Valid @RequestBody DataRequest dataRequest) {
@@ -133,6 +140,10 @@ public class AuthService {
             Student s = new Student();   // 创建实体对象
             s.setPerson(p);
             studentRepository.saveAndFlush(s);  //插入新的Student记录
+        }else if("TEACHER".equals(role)) {
+            Teacher t = new Teacher();   // 创建实体对象
+            t.setPerson(p);
+            teacherRepository.saveAndFlush(t);  //插入新的Student记录
         }
         return CommonMethod.getReturnData(LoginControlUtil.getInstance().getValidateCodeDataMap());
     }
