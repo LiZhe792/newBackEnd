@@ -26,7 +26,7 @@ public class Achievement {
     private Integer achievementId;
 
     @ManyToOne
-    @JoinColumn(name = "personId")
+    @JoinColumn(name = "studentId")
     private Student student;
 
     @Size(max = 100)

@@ -28,7 +28,7 @@ public class Project {
     private Integer projectId;
 
     @ManyToOne
-    @JoinColumn(name = "personId")
+    @JoinColumn(name = "studentId")
     @JsonIgnore
     private Student student;
 
