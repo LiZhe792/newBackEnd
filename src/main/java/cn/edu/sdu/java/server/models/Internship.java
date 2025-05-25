@@ -29,7 +29,7 @@ public class Internship {
     private Integer internshipId;
 
     @ManyToOne
-    @JoinColumn(name = "personId")
+    @JoinColumn(name = "studentId")
     @JsonIgnore
     private Student student;
 

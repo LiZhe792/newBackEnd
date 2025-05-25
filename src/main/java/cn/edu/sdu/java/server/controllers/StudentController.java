@@ -37,7 +37,6 @@ public class StudentController {
      * getStudentList 学生管理 点击查询按钮请求
      * 前台请求参数 numName 学号或名称的 查询串
      * 返回前端 存储学生信息的 MapList 框架会自动将Map转换程用于前后台传输数据的Json对象，Map的嵌套结构和Json的嵌套结构类似
-     *
      */
     @PostMapping("/getStudentList")
     @PreAuthorize("hasRole('ADMIN')")
@@ -86,10 +85,10 @@ public class StudentController {
     /**
      * importFeeData 前端上传消费流水Excl表数据服务
      *
-     * @param barr         文件二进制数据
-     * @param uploader     上传者
+     * @param barr        文件二进制数据
+     * @param uploader    上传者
      * @param personIdStr student 主键
-     * @param fileName     前端上传的文件名
+     * @param fileName    前端上传的文件名
      */
     @PostMapping(path = "/importFeeData")
     public DataResponse importFeeData(@RequestBody byte[] barr,
@@ -101,7 +100,6 @@ public class StudentController {
 
     /**
      * getStudentListExcl 前端下载导出学生基本信息Excl表数据
-     *
      */
     @PostMapping("/getStudentListExcl")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
@@ -144,7 +142,15 @@ public class StudentController {
 
     @PostMapping("/importFeeDataWeb")
     @PreAuthorize("hasRole('STUDENT')")
-    public DataResponse importFeeDataWeb(@RequestParam Map<String,Object> request, @RequestParam("file") MultipartFile file) {
+    public DataResponse importFeeDataWeb(@RequestParam Map<String, Object> request, @RequestParam("file") MultipartFile file) {
         return studentService.importFeeDataWeb(request, file);
-    }}
+    }
+
+    @PostMapping("/getPersonIdByStudentNum")
+    @PreAuthorize("hasRole('ADMIN')")
+    public DataResponse getPersonIdByStudentNum(@Valid @RequestBody DataRequest dataRequest) {
+        return studentService.getPersonIdByStudentNum(dataRequest);
+    }
+}
+
 
