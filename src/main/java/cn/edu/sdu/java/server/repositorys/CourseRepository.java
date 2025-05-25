@@ -16,7 +16,12 @@ import java.util.Optional;
 public interface CourseRepository extends JpaRepository<Course,Integer> {
     @Query(value = "from Course where ?1='' or num like %?1% or name like %?1% ")
     List<Course> findCourseListByNumName(String numName);
+    @Query(value = "from  Course where num=?1 or name=?2")
+    Optional<Course> findByNumOrName(String num,String name);
+    @Query(value = "from Course where num=?1 and name=?2")
+    Optional<Course> findByNumAndName(String num,String name);
+
 
     Optional<Course> findByNum(String num);
-    List<Course> findByName(String name);
+    Optional<Course> findByName(String name);
 }

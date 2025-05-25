@@ -1,4 +1,4 @@
-package cn.edu.sdu.java.server.services;
+/*package cn.edu.sdu.java.server.services;
 
 import cn.edu.sdu.java.server.models.Course;
 import cn.edu.sdu.java.server.payload.request.DataRequest;
@@ -85,4 +85,4 @@ public class CourseService {
         return CommonMethod.getReturnMessageOK();
     }
 
-}
+}*/

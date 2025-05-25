@@ -165,7 +165,7 @@ public class StudentService {
             u.setCreatorId(CommonMethod.getPersonId());
             userRepository.saveAndFlush(u); //插入新的User记录
             s = new Student();   // 创建实体对象
-            s.setPersonId(personId);
+            s.setPerson(p);
             studentRepository.saveAndFlush(s);  //插入新的Student记录
             isNew = true;
         } else {
@@ -211,7 +211,7 @@ public class StudentService {
             m.put("courseNum", c.getNum());
             m.put("courseName", c.getName());
             m.put("credit", c.getCredit());
-            m.put("mark", s.getMark());
+            m.put("mark", s.getMarks());
             m.put("ranking", s.getRanking());
             list.add(m);
         }
@@ -228,13 +228,13 @@ public class StudentService {
         Course c;
         for (Score s : sList) {
             c = s.getCourse();
-            if (s.getMark() >= 90)
+            if (s.getMarks() >= 90)
                 count[0]++;
-            else if (s.getMark() >= 80)
+            else if (s.getMarks() >= 80)
                 count[1]++;
-            else if (s.getMark() >= 70)
+            else if (s.getMarks() >= 70)
                 count[2]++;
-            else if (s.getMark() >= 60)
+            else if (s.getMarks() >= 60)
                 count[3]++;
             else
                 count[4]++;

@@ -64,7 +64,7 @@ public class ScoreService {
             m.put("courseNum",s.getCourse().getNum());
             m.put("courseName",s.getCourse().getName());
             m.put("credit",""+s.getCourse().getCredit());
-            m.put("mark",""+s.getMark());
+            m.put("marks",""+s.getMarks());
             dataList.add(m);
         }
         return CommonMethod.getReturnData(dataList);
@@ -72,7 +72,7 @@ public class ScoreService {
     public DataResponse scoreSave(DataRequest dataRequest) {
         Integer personId = dataRequest.getInteger("personId");
         Integer courseId = dataRequest.getInteger("courseId");
-        Integer mark = dataRequest.getInteger("mark");
+        Integer marks = dataRequest.getInteger("marks");
         Integer scoreId = dataRequest.getInteger("scoreId");
         Optional<Score> op;
         Score s = null;
@@ -86,7 +86,7 @@ public class ScoreService {
             s.setStudent(studentRepository.findById(personId).get());
             s.setCourse(courseRepository.findById(courseId).get());
         }
-        s.setMark(mark);
+        s.setMarks(marks);
         scoreRepository.save(s);
         return CommonMethod.getReturnMessageOK();
     }

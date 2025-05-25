@@ -30,7 +30,7 @@ public class Score {
     @JoinColumn(name = "courseId")
     private Course course;
 
-    private Integer mark;
+    private Integer marks;
     private Integer ranking;
 
 }

@@ -2,6 +2,7 @@ package cn.edu.sdu.java.server.controllers;
 
 import cn.edu.sdu.java.server.payload.request.DataRequest;
 import cn.edu.sdu.java.server.payload.response.DataResponse;
+import cn.edu.sdu.java.server.services.FamilyInfoService;
 import cn.edu.sdu.java.server.services.StudentService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -25,9 +26,11 @@ import java.util.*;
 @RequestMapping("/api/student")
 public class StudentController {
     private final StudentService studentService;
+    private final FamilyInfoService familyInfoService;
 
-    public StudentController(StudentService studentService) {
+    public StudentController(StudentService studentService, FamilyInfoService familyInfoService) {
         this.studentService = studentService;
+        this.familyInfoService = familyInfoService;
     }
 
     /**
@@ -115,38 +118,33 @@ public class StudentController {
     /*
         FamilyMember
      */
+    @PostMapping("/getFamilyInfo")
+    @PreAuthorize("hasRole('ADMIN') or  hasRole('STUDENT')")
+    public DataResponse getFamilyInfo(@Valid @RequestBody DataRequest dataRequest) {
+        return familyInfoService.getFamilyInfo(dataRequest);
+    }
+
     @PostMapping("/getFamilyMemberList")
     @PreAuthorize(" hasRole('ADMIN') or  hasRole('STUDENT')")
     public DataResponse getFamilyMemberList(@Valid @RequestBody DataRequest dataRequest) {
-        return studentService.getFamilyMemberList(dataRequest);
+        return familyInfoService.getFamilyMemberList(dataRequest);
     }
 
     @PostMapping("/familyMemberSave")
     @PreAuthorize(" hasRole('ADMIN') or  hasRole('STUDENT')")
     public DataResponse familyMemberSave(@Valid @RequestBody DataRequest dataRequest) {
-        return studentService.familyMemberSave(dataRequest);
+        return familyInfoService.familyMemberSave(dataRequest);
     }
 
     @PostMapping("/familyMemberDelete")
     @PreAuthorize(" hasRole('ADMIN') or  hasRole('STUDENT')")
     public DataResponse familyMemberDelete(@Valid @RequestBody DataRequest dataRequest) {
-        return studentService.familyMemberDelete(dataRequest);
+        return familyInfoService.familyMemberDelete(dataRequest);
     }
 
     @PostMapping("/importFeeDataWeb")
     @PreAuthorize("hasRole('STUDENT')")
-    public DataResponse importFeeDataWeb(@RequestParam Map<String, Object> request, @RequestParam("file") MultipartFile file) {
+    public DataResponse importFeeDataWeb(@RequestParam Map<String,Object> request, @RequestParam("file") MultipartFile file) {
         return studentService.importFeeDataWeb(request, file);
-    }
+    }}
 
-    /**
-     * 根据学号获取学生对应的PersonId
-     * @param dataRequest 包含学号的请求参数（studentNum字段）
-     * @return DataResponse<Integer> 成功返回PersonId，失败返回错误信息
-     */
-    @PostMapping("/getPersonIdByStudentNum")
-    @PreAuthorize("hasRole('ADMIN')")
-    public DataResponse getPersonIdByStudentNum(@Valid @RequestBody DataRequest dataRequest) {
-        return studentService.getPersonIdByStudentNum(dataRequest);
-    }
-}

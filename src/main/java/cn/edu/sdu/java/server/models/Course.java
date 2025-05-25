@@ -24,18 +24,31 @@ import lombok.Setter;
 public class Course  {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer courseId;
+    private Integer courseId;//主键
     @NotBlank
     @Size(max = 20)
-    private String num;
+    private String num;//课程号
 
     @Size(max = 50)
-    private String name;
-    private Integer credit;
-    @ManyToOne
+    private String name;//课程名称
+    private String credit;//学分
+    /*@ManyToOne
     @JoinColumn(name="pre_course_id")
-    private Course preCourse;
+    private Course preCourse;*/
+    @Size(max = 20)
+    private String time;//学时
+    @Size(max = 20)
+    private String type;//类别
+    @Size(max = 20)
+    private String exam;//考核方式
+    @Size(max = 20)
+    private String position;//上课地点
+    @Size(max=50)
+    private String preCourse;//前序课程
+    @Size(max = 20)
+    private String resource;
     @Size(max = 12)
     private String coursePath;
-
+    @Size(max=20)
+    private String teacherName;
 }

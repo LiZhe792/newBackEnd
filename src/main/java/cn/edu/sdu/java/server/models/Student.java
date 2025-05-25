@@ -22,10 +22,12 @@ import lombok.Setter;
         })
 public class Student {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "student_id")
     private Integer personId;
 
     @OneToOne
-    @JoinColumn(name = "personId")
+    @JoinColumn(name = "person_id")
     @JsonIgnore
     private Person person;
 

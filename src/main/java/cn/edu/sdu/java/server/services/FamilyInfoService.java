@@ -60,7 +60,7 @@ public class FamilyInfoService {
      * 获取学生的家庭信息列表
      */
     public DataResponse getFamilyMemberList(DataRequest dataRequest) {
-        String numName = CommonMethod.getString(dataRequest.getData(), "numName");
+        String numName = CommonMethod.getString(dataRequest.getData(), "studentNum");
         List<FamilyMember> familyMembers = familyMemberRepository.findFamilyMemberListByNumName(numName);
         List<Map<String, Object>> dataList = new ArrayList<>();
 

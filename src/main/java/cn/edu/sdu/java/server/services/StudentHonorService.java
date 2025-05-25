@@ -58,9 +58,8 @@ public class StudentHonorService {
         honor.setHonorType((String) form.get("honorLevel"));
         Integer personId = (Integer) form.get("personId");
         if (personId != null) {
-            Student student = new Student();
-            student.setPersonId(personId);
-            honor.setStudent(student);
+
+            return  CommonMethod.getReturnMessageError("学生不存在");
         }
         try {
             StudentHonor savedHonor = studentHonorRepository.save(honor);
@@ -81,9 +80,7 @@ public class StudentHonorService {
             honor.setHonorType((String) form.get("honorLevel"));
             Integer personId = (Integer) form.get("personId");
             if (personId != null) {
-                Student student = new Student();
-                student.setPersonId(personId);
-                honor.setStudent(student);
+                return  CommonMethod.getReturnMessageError("学生不存在");
             }
             try {
                 studentHonorRepository.save(honor);
