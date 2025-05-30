@@ -15,6 +15,7 @@ import cn.edu.sdu.java.server.repositorys.StudentRepository;
 import cn.edu.sdu.java.server.util.CommonMethod;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
@@ -36,6 +37,7 @@ public class ScoreController {
     //    this.scoreService = scoreService;
     //}
     @PostMapping("/getStudentItemOptionList")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('STUDENT') or hasRole('TEACHER')")
     public OptionItemList getStudentItemOptionList(@Valid @RequestBody DataRequest dataRequest) {
         List<Student> sList = studentRepository.findStudentListByNumName("");
         OptionItem item;
@@ -47,6 +49,7 @@ public class ScoreController {
     }
 
     @PostMapping("/getCourseItemOptionList")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('STUDENT') or hasRole('TEACHER')")
     public OptionItemList getCourseItemOptionList(@Valid @RequestBody DataRequest dataRequest) {
         List<Course> sList = courseRepository.findAll();  //数据库查询操作
         OptionItem item;
@@ -58,6 +61,7 @@ public class ScoreController {
     }
 
     @PostMapping("/getScoreList")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('STUDENT') or hasRole('TEACHER')")
     public DataResponse getScoreList(@Valid @RequestBody DataRequest dataRequest) {
         Integer studentId = dataRequest.getInteger("studentId");
         if(studentId == null)
@@ -85,6 +89,7 @@ public class ScoreController {
         return CommonMethod.getReturnData(dataList);
     }
     @PostMapping("getScoreListByNumName")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('STUDENT') or hasRole('TEACHER')")
     public DataResponse getScoreListByNumName(@Valid@RequestBody DataRequest dataRequest){
         String num= dataRequest.getString("num");
         if(num==null){
@@ -118,6 +123,7 @@ public class ScoreController {
         return CommonMethod.getReturnData(dataList);
     }
     @PostMapping("/scoreSave")
+    @PreAuthorize("hasRole('ADMIN')  or hasRole('TEACHER')")
     public DataResponse scoreSave(@Valid @RequestBody DataRequest dataRequest) {
         Integer studentId = dataRequest.getInteger("studentId");
         Integer courseId = dataRequest.getInteger("courseId");
@@ -148,6 +154,7 @@ public class ScoreController {
         return CommonMethod.getReturnMessageOK();
     }
     @PostMapping("/scoreNew")
+    @PreAuthorize("hasRole('ADMIN')  or hasRole('TEACHER')")
     public DataResponse scoreNew(@Valid@RequestBody DataRequest dataRequest){
         Integer studentId = dataRequest.getInteger("studentId");
         Integer courseId = dataRequest.getInteger("courseId");
@@ -182,6 +189,7 @@ public class ScoreController {
         return CommonMethod.getReturnMessageOK();
     }
     @PostMapping("/scoreDelete")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('TEACHER')")
     public DataResponse scoreDelete(@Valid @RequestBody DataRequest dataRequest) {
         Integer scoreId = dataRequest.getInteger("scoreId");
         Optional<Score> op;

@@ -12,6 +12,7 @@ import cn.edu.sdu.java.server.repositorys.*;
 import cn.edu.sdu.java.server.util.CommonMethod;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import cn.edu.sdu.java.server.models.Marks;
 
@@ -37,6 +38,7 @@ public class MarksController {
     private RanksRepository ranksRepository;
 
     @PostMapping("/getStudentItemOptionList")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('STUDENT') or hasRole('TEACHER')")
     public OptionItemList getStudentItemOptionList(@Valid @RequestBody DataRequest dataRequest){
         List<Student> sList = studentRepository.findStudentListByNumName("");  //数据库查询操作
         OptionItem item;
@@ -47,6 +49,7 @@ public class MarksController {
         return new OptionItemList(0, itemList);
     }
     @PostMapping("/getCourseItemOptionList")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('STUDENT') or hasRole('TEACHER')")
     public OptionItemList getCourseItemOptionList(@Valid @RequestBody DataRequest dataRequest){
         List<Course> sList = courseRepository.findAll();  //数据库查询操作
         OptionItem item;
@@ -57,6 +60,7 @@ public class MarksController {
         return new OptionItemList(0, itemList);
     }
     @PostMapping("/getMarksList")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('STUDENT') or hasRole('TEACHER')")
     public DataResponse getMarksList(@Valid @RequestBody DataRequest dataRequest){
         marksInit.initialize();
         Integer studentId = dataRequest.getInteger("studentId");
@@ -97,6 +101,7 @@ public class MarksController {
         return CommonMethod.getReturnData(dataList);
     }
     @PostMapping("/getMarksListByNumName")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('STUDENT') or hasRole('TEACHER')")
     public DataResponse getMarksListByNumName(@Valid @RequestBody DataRequest dataRequest){
         String num= dataRequest.getString("num");
         if(num==null){
@@ -143,6 +148,7 @@ public class MarksController {
         return CommonMethod.getReturnData(dataList);
     }
     @PostMapping("/refresh")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('STUDENT') or hasRole('TEACHER')")
     public DataResponse refresh(@Valid @RequestBody DataRequest dataRequest){
         try{
             marksInit.initialize();

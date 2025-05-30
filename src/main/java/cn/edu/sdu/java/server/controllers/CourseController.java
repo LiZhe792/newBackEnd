@@ -10,6 +10,7 @@ import cn.edu.sdu.java.server.repositorys.*;
 import cn.edu.sdu.java.server.util.CommonMethod;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
@@ -42,6 +43,7 @@ public class CourseController {
     private HomeWorkController homeWorkController;
 
     @PostMapping("/getCourseList")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('STUDENT') or hasRole('TEACHER')")
     public DataResponse getCourseList(@Valid @RequestBody DataRequest dataRequest) {
         String numName = dataRequest.getString("numName");
         if (numName == null)
@@ -69,6 +71,7 @@ public class CourseController {
     }
 
     @PostMapping("/courseSave")
+    @PreAuthorize("hasRole('ADMIN')  or hasRole('TEACHER')")
     public DataResponse courseSave(@Valid @RequestBody DataRequest dataRequest) {
         Integer courseId = dataRequest.getInteger("courseId");
         String num = dataRequest.getString("num");
@@ -114,6 +117,7 @@ public class CourseController {
     }
 
     @PostMapping("/courseDelete")
+    @PreAuthorize("hasRole('ADMIN')  or hasRole('TEACHER')")
     public DataResponse courseDelete(@Valid @RequestBody DataRequest dataRequest) {
         Integer courseId = dataRequest.getInteger("courseId");
         Optional<Course> op;
@@ -137,6 +141,7 @@ public class CourseController {
     }
 
     @PostMapping("/newCourse")
+    @PreAuthorize("hasRole('ADMIN')  or hasRole('TEACHER')")
     public DataResponse courseNew(@Valid @RequestBody DataRequest dataRequest) {
         String num = dataRequest.getString("num");
         String name = dataRequest.getString("name");

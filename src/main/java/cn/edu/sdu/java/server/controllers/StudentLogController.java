@@ -30,7 +30,7 @@ public class StudentLogController {
      * @return 日志列表 DataResponse
      */
     @PostMapping("/getLogList")
-    @PreAuthorize("hasRole('ADMIN') or hasRole('STUDENT')")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('STUDENT') or hasRole('TEACHER')")
     public ResponseEntity<DataResponse> getLogList(@Valid @RequestBody DataRequest dataRequest) {
         DataResponse response = studentLogService.getLogList(dataRequest);
         return ResponseEntity.ok(response);
@@ -42,7 +42,7 @@ public class StudentLogController {
      * @return 日志详情 DataResponse
      */
     @PostMapping("/getLogInfo")
-    @PreAuthorize("hasRole('ADMIN') or hasRole('STUDENT')")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('STUDENT') or hasRole('TEACHER')")
     public ResponseEntity<DataResponse> getLogInfo(@Valid @RequestBody DataRequest dataRequest) {
         DataResponse response = studentLogService.getLogInfo(dataRequest);
         return ResponseEntity.ok(response);
@@ -54,7 +54,7 @@ public class StudentLogController {
      * @return 操作结果 DataResponse
      */
     @PostMapping("/logSave")
-    @PreAuthorize("hasRole('ADMIN') or hasRole('STUDENT')")
+    @PreAuthorize("hasRole('ADMIN')  or hasRole('TEACHER')")
     public ResponseEntity<DataResponse> logSave(@Valid @RequestBody DataRequest dataRequest) {
         DataResponse response = studentLogService.logSave(dataRequest);
         return ResponseEntity.ok(response);
@@ -66,7 +66,7 @@ public class StudentLogController {
      * @return 操作结果 DataResponse
      */
     @PostMapping("/logDelete")
-    @PreAuthorize("hasRole('ADMIN') or hasRole('STUDENT')")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('TEACHER')")
     public ResponseEntity<DataResponse> logDelete(@Valid @RequestBody DataRequest dataRequest) {
         DataResponse response = studentLogService.logDelete(dataRequest);
         return ResponseEntity.ok(response);

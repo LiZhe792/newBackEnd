@@ -15,6 +15,7 @@ import cn.edu.sdu.java.server.repositorys.StudentRepository;
 import cn.edu.sdu.java.server.util.CommonMethod;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
@@ -32,6 +33,7 @@ public class HomeWorkController {
     @Autowired
     private CourseRepository courseRepository;
     @PostMapping("/getStudentItemOptionList")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('STUDENT') or hasRole('TEACHER')")
     public OptionItemList getStudentItemOptionList(@Valid @RequestBody DataRequest dataRequest){
         List<Student> sList=studentRepository.findStudentListByNumName("");
         OptionItem item;
@@ -42,6 +44,7 @@ public class HomeWorkController {
         return new OptionItemList(0, itemList);
     }
     @PostMapping("/getCourseItemOptionList")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('STUDENT') or hasRole('TEACHER')")
     public OptionItemList getCourseItemOptionList(@Valid @RequestBody DataRequest dataRequest){
         List<Course> sList = courseRepository.findAll();  //数据库查询操作
         OptionItem item;
@@ -52,6 +55,7 @@ public class HomeWorkController {
         return new OptionItemList(0, itemList);
     }
     @PostMapping("/getWorkList")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('STUDENT') or hasRole('TEACHER')")
     public DataResponse getWorkList(@Valid @RequestBody DataRequest dataRequest){
         Integer studentId = dataRequest.getInteger("studentId");
         if (studentId == null)
@@ -81,6 +85,7 @@ public class HomeWorkController {
         return CommonMethod.getReturnData(dataList);
     }
     @PostMapping("/getWorkListByNumName")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('STUDENT') or hasRole('TEACHER')")
     public DataResponse getByNumName(@Valid @RequestBody DataRequest dataRequest){
         String num= dataRequest.getString("num");
         if(num==null){
@@ -115,6 +120,7 @@ public class HomeWorkController {
         return CommonMethod.getReturnData(dataList);
     }
     @PostMapping("/homeworkEditSave")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('TEACHER')")
     public DataResponse courseAttendanceEditSave(@Valid @RequestBody DataRequest dataRequest){
         Integer studentId = dataRequest.getInteger("studentId");
         Integer courseId = dataRequest.getInteger("courseId");
@@ -141,6 +147,7 @@ public class HomeWorkController {
         return CommonMethod.getReturnMessageOK();
     }
     @PostMapping("/deleteHomework")
+    @PreAuthorize("hasRole('ADMIN')or hasRole('TEACHER')")
     public DataResponse deleteCourseAttendance(@Valid @RequestBody DataRequest dataRequest){
         Integer homeworkId=dataRequest.getInteger("workId");
         Optional<Homework> op;
@@ -155,6 +162,7 @@ public class HomeWorkController {
         return CommonMethod.getReturnMessageOK();
     }
     @PostMapping("/newHomework")
+    @PreAuthorize("hasRole('ADMIN')  or hasRole('TEACHER')")
     public DataResponse newCourseAttendance(@Valid @RequestBody DataRequest dataRequest){
         Integer studentId=dataRequest.getInteger("studentId");
         Integer courseId= dataRequest.getInteger("courseId");

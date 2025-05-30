@@ -13,6 +13,7 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
@@ -32,7 +33,7 @@ public class FamilyInfoService {
     private final StudentRepository studentRepository;
 
     public FamilyInfoService(FamilyMemberRepository familyMemberRepository,
-                             StudentRepository studentRepository) {
+                             @Autowired StudentRepository studentRepository) {
         this.familyMemberRepository = familyMemberRepository;
         this.studentRepository = studentRepository;
     }

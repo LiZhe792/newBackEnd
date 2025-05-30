@@ -5,7 +5,9 @@ import cn.edu.sdu.java.server.models.StudentHonor;
 import cn.edu.sdu.java.server.payload.request.DataRequest;
 import cn.edu.sdu.java.server.payload.response.DataResponse;
 import cn.edu.sdu.java.server.repositorys.StudentHonorRepository;
+import cn.edu.sdu.java.server.repositorys.StudentRepository;
 import cn.edu.sdu.java.server.util.CommonMethod;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -20,9 +22,12 @@ import java.util.stream.Collectors;
 @Service
 public class StudentHonorService {
     private final StudentHonorRepository studentHonorRepository;
+    private final StudentRepository studentRepository;
 
-    public StudentHonorService(StudentHonorRepository studentHonorRepository) {
+    public StudentHonorService(StudentHonorRepository studentHonorRepository,
+                               @Autowired StudentRepository studentRepository) {
         this.studentHonorRepository = studentHonorRepository;
+        this.studentRepository = studentRepository;
     }
 
     public DataResponse getHonorList(DataRequest dataRequest) {
@@ -56,11 +61,17 @@ public class StudentHonorService {
         honor.setHonorName((String) form.get("honorName"));
         honor.setHonorDate((String) form.get("honorDate"));
         honor.setHonorType((String) form.get("honorLevel"));
-        Integer personId = (Integer) form.get("personId");
-        if (personId != null) {
-
+        Integer studentId = (Integer) form.get("personId");
+        if (studentId == null) {
             return  CommonMethod.getReturnMessageError("学生不存在");
         }
+        Optional<Student> studentOptional = studentRepository.findById(studentId);
+        if (studentOptional.isEmpty()) {
+            return CommonMethod.getReturnMessageError("学生不存在");
+        }
+        // 学生实体
+        Student student = studentOptional.get();
+        honor.setStudent(student);
         try {
             StudentHonor savedHonor = studentHonorRepository.save(honor);
             return CommonMethod.getReturnData(savedHonor.getHonorId());

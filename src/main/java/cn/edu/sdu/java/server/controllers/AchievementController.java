@@ -26,6 +26,7 @@ public class AchievementController {
         return achievementService.getAchievementList(dataRequest);
     }
 
+
     @PostMapping("/achievementDelete")
     @PreAuthorize("hasRole('ADMIN')")
     public DataResponse achievementDelete(@Valid @RequestBody DataRequest dataRequest) {
@@ -39,7 +40,7 @@ public class AchievementController {
     }
 
     @PostMapping("/achievementEditSave")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('STUDENT')")
     public DataResponse achievementEditSave(@Valid @RequestBody DataRequest dataRequest) {
         return achievementService.achievementEditSave(dataRequest);
     }

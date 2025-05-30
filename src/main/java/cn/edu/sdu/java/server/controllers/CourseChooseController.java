@@ -38,6 +38,7 @@ public class CourseChooseController {
     private ScoreController scoreController;
 
     @RequestMapping("/getStudentItemOptionList")
+
     public OptionItemList getStudentItemOptionList(@Valid @RequestBody DataRequest dataRequest) {
         List<Student> sList = studentRepository.findStudentListByNumName("");  //数据库查询操作
         OptionItem item;

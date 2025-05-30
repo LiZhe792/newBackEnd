@@ -20,37 +20,37 @@ public class ProjectController {
     }
 
     @PostMapping("/getProjectList")
-    @PreAuthorize("hasRole('ADMIN') or hasRole('STUDENT')")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('STUDENT') or hasRole('TEACHER')")
     public DataResponse getProjectList(@Valid @RequestBody DataRequest dataRequest) {
         return projectService.getProjectList(dataRequest);
     }
 
     @PostMapping("/projectDelete")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('STUDENT') ")
     public DataResponse projectDelete(@Valid @RequestBody DataRequest dataRequest) {
         return projectService.projectDelete(dataRequest);
     }
 
     @PostMapping("/getProjectInfo")
-    @PreAuthorize("hasRole('ADMIN') or hasRole('STUDENT')")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('STUDENT') or hasRole('TEACHER')")
     public DataResponse getProjectInfo(@Valid @RequestBody DataRequest dataRequest) {
         return projectService.getProjectInfo(dataRequest);
     }
 
     @PostMapping("/projectEditSave")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('STUDENT') ")
     public DataResponse projectEditSave(@Valid @RequestBody DataRequest dataRequest) {
         return projectService.projectEditSave(dataRequest);
     }
 
     @PostMapping("/getProjectPageData")
-    @PreAuthorize("hasRole('ADMIN') or hasRole('STUDENT')")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('STUDENT') or hasRole('TEACHER')")
     public DataResponse getProjectPageData(@Valid @RequestBody DataRequest dataRequest) {
         return projectService.getProjectPageData(dataRequest);
     }
 
     @PostMapping("/getProjectListExcel")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('STUDENT') or hasRole('TEACHER')")
     public ResponseEntity<StreamingResponseBody> getProjectListExcel(@Valid @RequestBody DataRequest dataRequest) {
         return projectService.getProjectListExcel(dataRequest);
     }

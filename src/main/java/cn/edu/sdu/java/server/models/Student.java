@@ -26,6 +26,7 @@ public class Student {
     @Column(name = "student_id")
     private Integer personId;
 
+    
     @OneToOne
     @JoinColumn(name = "person_id")
     @JsonIgnore

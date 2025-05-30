@@ -15,6 +15,7 @@ import cn.edu.sdu.java.server.repositorys.StudentRepository;
 import cn.edu.sdu.java.server.util.CommonMethod;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
@@ -32,6 +33,7 @@ public class CourseAttendanceController {
     @Autowired
     private CourseChooseRepository courseChooseRepository;
     @PostMapping("/getStudentItemOptionList")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('STUDENT') or hasRole('TEACHER')")
     public OptionItemList  getStudentAttendanceList(@Valid @RequestBody DataRequest dataRequest){
         List<Student> sList = studentRepository.findStudentListByNumName("");  //数据库查询操作
         OptionItem item;
@@ -42,6 +44,7 @@ public class CourseAttendanceController {
         return new OptionItemList(0, itemList);
     }
     @PostMapping("/getCourseItemOptionList")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('STUDENT') or hasRole('TEACHER')")
     public OptionItemList  getCourseItemOptionList(@Valid @RequestBody DataRequest dataRequest){
         List<Course> sList = courseRepository.findAll();
         OptionItem item;
@@ -52,6 +55,7 @@ public class CourseAttendanceController {
         return new OptionItemList(0, itemList);
     }
     @PostMapping("/getCourseAttendanceList")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('STUDENT') or hasRole('TEACHER')")
     public DataResponse getCourseAttendanceList(@Valid @RequestBody DataRequest dataRequest){
         Integer studentId=dataRequest.getInteger("studentId");
         if(studentId==null)
@@ -80,6 +84,7 @@ public class CourseAttendanceController {
         return CommonMethod.getReturnData(dataList);
     }
     @PostMapping("/getListByNumName")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('STUDENT') or hasRole('TEACHER')")
     public DataResponse getList(@Valid @RequestBody DataRequest dataRequest){
         String num=dataRequest.getString("num");
         if(num==null){
@@ -114,6 +119,7 @@ public class CourseAttendanceController {
         return CommonMethod.getReturnData(dataList);
     }
     @PostMapping("/courseAttendanceEditSave")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('TEACHER')")
     public DataResponse courseAttendanceEditSave(@Valid @RequestBody DataRequest dataRequest){
         Integer studentId=dataRequest.getInteger("studentId");
         Integer courseId = dataRequest.getInteger("courseId");
@@ -149,6 +155,7 @@ public class CourseAttendanceController {
         return CommonMethod.getReturnMessageOK();
     }
     @PostMapping("/deleteCourseAttendance")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('TEACHER')")
     public DataResponse deleteCourseAttendance(@Valid @RequestBody DataRequest dataRequest) {
         Integer courseAttendanceId=dataRequest.getInteger("courseAttendanceId");
         Optional<CourseAttendance> op;
@@ -164,12 +171,12 @@ public class CourseAttendanceController {
         return CommonMethod.getReturnMessageOK();
     }
     @PostMapping("/newCourseAttendance")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('STUDENT') or hasRole('TEACHER')")
     public DataResponse newCourseAttendance(@Valid @RequestBody DataRequest dataRequest) {
         Integer studentId=dataRequest.getInteger("studentId");
         Integer courseId = dataRequest.getInteger("courseId");
         String newTime= dataRequest.getString("newTime");
         String newFlag= dataRequest.getString("newFlag");
-        newFlag=newFlag.equals("1")?"是":"否";
         Optional<CourseChoose> chooseOp=courseChooseRepository.findOpByStudentCourse(studentId,courseId);
         if(!chooseOp.isPresent()){
             return CommonMethod.getReturnMessageError("该学生没有选这门课，请再仔细核对一下。");

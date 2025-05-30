@@ -24,37 +24,37 @@ public class StudentHonorController {
     }
 
     @PostMapping("/getHonorList")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('STUDENT') or hasRole('TEACHER')")
     public DataResponse getHonorList(@Valid @RequestBody DataRequest dataRequest) {
         return studentHonorService.getHonorList(dataRequest);
     }
 
     @PostMapping("/getHonorPage")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('STUDENT') or hasRole('TEACHER')")
     public DataResponse getHonorPage(@Valid @RequestBody DataRequest dataRequest) {
         return studentHonorService.getHonorPage(dataRequest);
     }
 
     @PostMapping("/addHonor")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('STUDENT') ")
     public DataResponse addHonor(@Valid @RequestBody DataRequest dataRequest) {
         return studentHonorService.addHonor(dataRequest);
     }
 
     @PostMapping("/updateHonor")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('STUDENT') ")
     public DataResponse updateHonor(@Valid @RequestBody DataRequest dataRequest) {
         return studentHonorService.updateHonor(dataRequest);
     }
 
     @PostMapping("/deleteHonor")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('STUDENT') ")
     public DataResponse deleteHonor(@Valid @RequestBody DataRequest dataRequest) {
         return studentHonorService.deleteHonor(dataRequest);
     }
 
     @PostMapping("/getHonorDetails")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('STUDENT') or hasRole('TEACHER')")
     public DataResponse getHonorDetails(@Valid @RequestBody DataRequest dataRequest) {
         return studentHonorService.getHonorDetails(dataRequest);
     }

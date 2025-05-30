@@ -21,31 +21,31 @@ public class LectureController {
     }
 
     @PostMapping("/getLectureList")
-    @PreAuthorize("hasRole('ADMIN') or hasRole('STUDENT')")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('STUDENT') or hasRole('TEACHER')")
     public DataResponse getLectureList(@Valid @RequestBody DataRequest dataRequest) {
         return lectureService.getLectureList(dataRequest);
     }
 
     @PostMapping("/lectureDelete")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('STUDENT') ")
     public DataResponse lectureDelete(@Valid @RequestBody DataRequest dataRequest) {
         return lectureService.lectureDelete(dataRequest);
     }
 
     @PostMapping("/getLectureInfo")
-    @PreAuthorize("hasRole('ADMIN') or hasRole('STUDENT')")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('STUDENT') or hasRole('TEACHER')")
     public DataResponse getLectureInfo(@Valid @RequestBody DataRequest dataRequest) {
         return lectureService.getLectureInfo(dataRequest);
     }
 
     @PostMapping("/lectureEditSave")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('STUDENT') ")
     public DataResponse lectureEditSave(@Valid @RequestBody DataRequest dataRequest) {
         return lectureService.lectureEditSave(dataRequest);
     }
 
     @PostMapping("/getLecturePageData")
-    @PreAuthorize("hasRole('ADMIN') or hasRole('STUDENT')")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('STUDENT') or hasRole('TEACHER')")
     public DataResponse getLecturePageData(@Valid @RequestBody DataRequest dataRequest) {
         return lectureService.getLecturePageData(dataRequest);
     }

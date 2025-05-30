@@ -31,7 +31,7 @@ public class TeacherController {
      * @return 存储教师信息的响应数据
      */
     @PostMapping("/getTeacherList")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('TEACHER')")
     public DataResponse getTeacherList(@Valid @RequestBody DataRequest dataRequest) {
         return teacherService.getTeacherList(dataRequest);
     }
@@ -44,7 +44,7 @@ public class TeacherController {
      * @return 正常操作响应
      */
     @PostMapping("/teacherDelete")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')  or hasRole('TEACHER')")
     public DataResponse teacherDelete(@Valid @RequestBody DataRequest dataRequest) {
         return teacherService.teacherDelete(dataRequest);
     }
@@ -56,7 +56,7 @@ public class TeacherController {
      * @return 根据teacherId从数据库中查出数据，存在Map对象里，并返回前端
      */
     @PostMapping("/getTeacherInfo")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('TEACHER')")
     public DataResponse getTeacherInfo(@Valid @RequestBody DataRequest dataRequest) {
         return teacherService.getTeacherInfo(dataRequest);
     }
@@ -71,7 +71,7 @@ public class TeacherController {
      * @return 新建或修改教师的主键 teacher_id 返回前端
      */
     @PostMapping("/teacherEditSave")
-    @PreAuthorize(" hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')  or hasRole('TEACHER')")
     public DataResponse teacherEditSave(@Valid @RequestBody DataRequest dataRequest) {
         return teacherService.teacherEditSave(dataRequest);
     }

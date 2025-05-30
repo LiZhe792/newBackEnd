@@ -21,25 +21,25 @@ public class InternshipController {
     }
 
     @PostMapping("/getInternshipList")
-    @PreAuthorize("hasRole('ADMIN') or hasRole('STUDENT')")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('STUDENT') or hasRole('TEACHER')")
     public DataResponse getInternshipList(@Valid @RequestBody DataRequest dataRequest) {
         return internshipService.getInternshipList(dataRequest);
     }
 
     @PostMapping("/internshipDelete")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')  or hasRole('TEACHER')")
     public DataResponse internshipDelete(@Valid @RequestBody DataRequest dataRequest) {
         return internshipService.internshipDelete(dataRequest);
     }
 
     @PostMapping("/getInternshipInfo")
-    @PreAuthorize("hasRole('ADMIN') or hasRole('STUDENT')")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('STUDENT') or hasRole('TEACHER')")
     public DataResponse getInternshipInfo(@Valid @RequestBody DataRequest dataRequest) {
         return internshipService.getInternshipInfo(dataRequest);
     }
 
     @PostMapping("/internshipEditSave")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('STUDENT')")
     public DataResponse internshipEditSave(@Valid @RequestBody DataRequest dataRequest) {
         return internshipService.internshipEditSave(dataRequest);
     }
